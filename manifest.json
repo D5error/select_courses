@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "name": "d5error",
+    "version": "1.0",
+
+    "icons": {
+        "48": "icons/D5.png"
+    },
+
+    "homepage_url": "https://github.com/d5error/select_courses",
+
+    "description": "仅供学习交流使用",
+
+    "permissions": [
+        "activeTab"
+    ],
+
+    "browser_action": {
+        "default_icon": "icons/D5.png",
+        "default_popup": "popup/index.html"
+    }
+  }

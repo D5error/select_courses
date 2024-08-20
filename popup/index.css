@@ -1,0 +1,32 @@
+#head {
+    text-align: center;
+    font-weight: bolder;
+    font-size: large;
+}
+
+.author {
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+body {
+    line-height: 0.8;
+}
+
+button {
+    width: 49%;
+    height: 30px;
+}
+
+.error {
+    color: red;
+}
+
+.yes {
+    color: green;
+}
