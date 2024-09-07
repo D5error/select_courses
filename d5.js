@@ -44,11 +44,9 @@ async function run(target, type, min, max){
     }
     else if(type === 3){
         btns[10].click()
-
     }
     else if(type === 4){
         btns[11].click()
-
     }
     else if(type === 5){
         btns[13].click()
