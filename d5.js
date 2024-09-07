@@ -1,4 +1,4 @@
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
 function getCheckButton(){
     return document.getElementsByClassName("ant-btn ant-input-search-button ant-btn-primary ant-btn-two-chinese-chars")[0];
