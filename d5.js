@@ -24,6 +24,14 @@ function getIKnownButton(){
     return document.getElementsByClassName("ant-btn ant-btn-primary")[2];
 }
 
+function getTime() {
+    const time = new Date()
+    const hour = time.getHours()
+    const minute = time.getMinutes()
+    const second = time.getSeconds()
+    return hour + "点" + minute + "分" + second + "秒"
+}
+
 async function run(target, type, min, max){
     await sleep(1000)
     console.log("正在进入指定网页")
@@ -81,7 +89,7 @@ async function run(target, type, min, max){
         }
         console.log("刷新选课界面成功，期望" + targetNum + "门课，目前已成功选上" + successNum + "门课");
         const randNum = getRandom(min, max);
-        console.log("等待" + randNum + "秒后刷新选课界面");
+        console.log("等待" + randNum + "秒后刷新选课界：当前时间" + getTime());
         await sleep(randNum * 1000); // 将随机秒数乘以1000转换为毫秒
         if(!isRunning){
             console.log("已停止运行");
