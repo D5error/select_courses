@@ -54,7 +54,7 @@ async function run(target, type, min, max){
     else{
         console.error("type错误");
     }
-    await sleep(4000);
+    await sleep(8000);
     console.log("成功到达指定界面");
     const favi = document.getElementsByClassName("ant-checkbox-input")[3];
     favi.click();
