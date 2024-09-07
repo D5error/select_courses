@@ -89,7 +89,7 @@ async function run(target, type, min, max){
         }
         console.log("刷新选课界面成功，期望" + targetNum + "门课，目前已成功选上" + successNum + "门课");
         const randNum = getRandom(min, max);
-        console.log("等待" + randNum + "秒后刷新选课界：当前时间" + getTime());
+        console.log("等待" + randNum + "秒后刷新选课界面，当前时间：" + getTime());
         await sleep(randNum * 1000); // 将随机秒数乘以1000转换为毫秒
         if(!isRunning){
             console.log("已停止运行");
