@@ -1,5 +1,4 @@
 const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
-let isRunning = false;
 
 function getCheckButton(){
     return document.getElementsByClassName("ant-btn ant-input-search-button ant-btn-primary ant-btn-two-chinese-chars")[0];
@@ -102,6 +101,7 @@ async function run(target, type, min, max){
         return;
     }
     window.hasRun = true;
+    isRunning = false;
 
     browser.runtime.onMessage.addListener(async (message) => {
         if (message.command === "run") {
