@@ -19,5 +19,13 @@
     "browser_action": {
         "default_icon": "icons/D5.png",
         "default_popup": "popup/popup.html"
-    }
+    },
+
+    "content_scripts": [
+        {
+            "matches": ["https://jwxt.sysu.edu.cn/jwxt/mk/courseSelection/*"],
+            "js": ["d5.js"],
+            "run_at": "document_idle"
+        }
+    ]
 }
