@@ -98,7 +98,7 @@ async function run(target, type, min, max){
     if (window.hasRun) {
         return;
     }
-    console.log("加载成功");
+    console.log("select courses脚本加载成功");
     window.hasRun = true;
     isRunning = false;
     chrome.runtime.onMessage.addListener(async (message) => {
