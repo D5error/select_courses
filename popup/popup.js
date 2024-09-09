@@ -1,7 +1,7 @@
 function listenForClicks() {
     document.addEventListener("click", (e) => {
         function setRun(tabs){
-            browser.tabs.sendMessage(tabs[0].id, {
+            chrome.tabs.sendMessage(tabs[0].id, {
                 command: "run",
                 type: selectedType,
                 targetNum: targetNum,
@@ -11,7 +11,7 @@ function listenForClicks() {
         }
 
         function setStop(tabs){
-            browser.tabs.sendMessage(tabs[0].id, {
+            chrome.tabs.sendMessage(tabs[0].id, {
                 command: "stop"
             });
         }
@@ -35,15 +35,19 @@ function listenForClicks() {
             }
             else{ 
                 document.body.className = "yes"
-                console.log("成功点击了run按钮")
-                browser.tabs.query({ active: true, currentWindow: true })
-                    .then(setRun)
-                    .catch(reportError);
+                console.log("成功点击了run按钮");
+                chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                    if (chrome.runtime.lastError) {
+                        reportError(chrome.runtime.lastError);
+                    } else {
+                        setRun(tabs);
+                    }
+                });                
             }
         } 
         else if (e.target.id === "stop"){
             console.log("检测到了stop")
-            browser.tabs.query({ active: true, currentWindow: true })
+            chrome.tabs.query({ active: true, currentWindow: true })
                 .then(setStop)
                 .catch(reportError);
         }
@@ -54,6 +58,14 @@ function reportExecuteScriptError(error) {
     console.error(`发生错误了: ${error.message}`);
 }
 
-browser.tabs.executeScript({ file: "/d5.js" })
-    .then(listenForClicks)
-    .catch(reportExecuteScriptError);
+
+chrome.tabs.executeScript({
+    file: "d5.js"
+}, (result) => {
+    if (chrome.runtime.lastError) {
+        console.error(`发生错误: ${chrome.runtime.lastError.message}`);
+    } else {
+        console.log("脚本注入成功");
+        listenForClicks();
+    }
+});

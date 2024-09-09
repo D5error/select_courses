@@ -98,10 +98,10 @@ async function run(target, type, min, max){
     if (window.hasRun) {
         return;
     }
+    console.log("加载成功");
     window.hasRun = true;
     isRunning = false;
-
-    browser.runtime.onMessage.addListener(async (message) => {
+    chrome.runtime.onMessage.addListener(async (message) => {
         if (message.command === "run") {
             console.log("已检测到运行指令，开始启动...")
             isRunning = true;
