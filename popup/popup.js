@@ -47,9 +47,14 @@ function listenForClicks() {
         } 
         else if (e.target.id === "stop"){
             console.log("检测到了stop")
-            chrome.tabs.query({ active: true, currentWindow: true })
-                .then(setStop)
-                .catch(reportError);
+            chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+                if(chrome.runtime.lastError) {
+                    reportError(chrome.runtime.lastError);
+                }
+                else {
+                    setStop(tabs);
+                }
+            });
         }
     });
 }
