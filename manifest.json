@@ -21,6 +21,10 @@
         "default_popup": "popup/popup.html"
     },
 
+    "background": {
+        "type": "module"
+    },
+
     "content_scripts": [
         {
             "matches": ["https://jwxt.sysu.edu.cn/jwxt/mk/courseSelection/*"],

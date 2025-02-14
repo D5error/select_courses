@@ -1,9 +1,42 @@
-sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
-
-function getCheckButton(){
-    return document.getElementsByClassName("ant-btn ant-input-search-button ant-btn-primary ant-btn-two-chinese-chars")[0];
+// 菜单中的选课按钮
+function getXuanKeButton() {
+    return document.getElementsByClassName("ant-tag ant-tag-checkable")[0];
 }
 
+// 校级公选按钮
+function getGongXuanButton() {
+    return document.getElementsByClassName("ant-tag ant-tag-checkable")[8];
+}
+
+// 跨专业按钮
+function getKuaZhuanYeButton() {
+    return document.getElementsByClassName("ant-tag ant-tag-checkable")[9];
+}
+// 本专业-专必按钮
+function getZhuanBiButton() {
+    return document.getElementsByClassName("ant-tag ant-tag-checkable")[10];
+}
+
+// 本专业-专选按钮
+function getZhuanXuanButton() {
+    return document.getElementsByClassName("ant-tag ant-tag-checkable")[11];
+}
+
+// 本专业-公必（体育）按钮
+function getTiYuButton() {
+    return document.getElementsByClassName("ant-tag ant-tag-checkable")[13]; 
+}
+
+// 收藏按钮
+function getShouCangButton() {
+    return document.getElementsByClassName("ant-checkbox-input")[3]; 
+}
+// 查询按钮
+function getCheckButton(){
+    return document.getElementsByClassName("ant-btn ant-input-search-button ant-btn-primary ant-btn-two-chinese-chars")[0]; 
+}
+
+// 抢课按钮
 function getSelectButton(successNum){
     const selectButton = document.getElementsByClassName("stu-xk-bot-r-filtrate");
     if(selectButton.length){
@@ -13,16 +46,19 @@ function getSelectButton(successNum){
     return selectButton;
 }
 
+// 选课成功后的"我知道了"按钮
+function getIKnownButton(){
+    return document.getElementsByClassName("ant-btn ant-btn-primary")[2];
+}
+
+// 生成随机数
 function getRandom(min, max){
     min = parseInt(min)
     max = parseInt(max)
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function getIKnownButton(){
-    return document.getElementsByClassName("ant-btn ant-btn-primary")[2];
-}
-
+// 获取当前时间
 function getTime() {
     const time = new Date()
     const hour = time.getHours()
@@ -31,44 +67,62 @@ function getTime() {
     return hour + "点" + minute + "分" + second + "秒"
 }
 
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+
+
+sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+
+// 选课主逻辑
 async function run(target, type, min, max){
     await sleep(1000)
-    console.log("正在进入指定网页")
-    type = parseInt(type)
-    const btns = document.getElementsByClassName("ant-tag ant-tag-checkable");
-    if(type === 1){
-        btns[8].click()
-    }
-    else if(type === 2){
-        btns[9].click()
-    }
-    else if(type === 3){
-        btns[10].click()
-    }
-    else if(type === 4){
-        btns[11].click()
-    }
-    else if(type === 5){
-        btns[13].click()
-    }
-    else{
-        console.error("type错误");
-    }
-    await sleep(8000);
-    console.log("成功到达指定界面");
-    const favi = document.getElementsByClassName("ant-checkbox-input")[3];
-    favi.click();
-    await sleep(2000);
-    console.log("成功打开收藏")
 
-    const targetNum = target;
-    let successNum = 0;
+
+
+    // 点击选课菜单按钮
+    getXuanKeButton().click();
+    await sleep(1000)
+
+
+
+    // 点击对应的课程类别按钮
+    type = parseInt(type)
+    switch (type) {
+        case 1: 
+            getGongXuanButton().click()
+            break;
+        case 2:
+            getKuaZhuanYeButton().click()
+            break;
+        case 3:
+            getZhuanBiButton().click()
+            break;
+        case 4:
+            getZhuanXuanButton().click()
+            break;
+        case 5:
+            getTiYuButton().click()
+            break;
+        default:
+            console.error("type错误");    
+    }
+    await sleep(2000);
+    
+    
+
+    // 点击收藏按钮
+    console.log("打开只显示收藏")
+    getShouCangButton().click();
+    await sleep(2000);
+
+
+
+    const targetNum = target; // 期望的选课数量
+    let successNum = 0; // 已成功选课数量
     while(isRunning && successNum < targetNum){
-        const checkButton = getCheckButton();
-        checkButton.click();
-        console.log("等待html刷新中...");
+        getCheckButton().click();
         await sleep(1500);  
-        console.log("等待html完毕");
 
         const selectButton = getSelectButton(successNum);
         if(selectButton && selectButton.textContent === "选课"){
@@ -79,17 +133,16 @@ async function run(target, type, min, max){
             iKnownButton.click()
             successNum += 1;
             if(successNum === targetNum){
-                isRunning = true;
+                isRunning = false;
             }
-        } else {
-            console.log("没有发现任何选课按钮");
         }
+
         console.log("刷新选课界面成功，期望" + targetNum + "门课，目前已成功选上" + successNum + "门课");
         const randNum = getRandom(min, max);
-        console.log("等待" + randNum + "秒后刷新选课界面，当前时间：" + getTime());
+        console.log("等待" + randNum + "秒后刷新选课界面：" + getTime());
         await sleep(randNum * 1000); // 将随机秒数乘以1000转换为毫秒
         if(!isRunning){
-            console.log("已停止运行");
+            console.log("运行结束");
         }
     }
 } 
@@ -101,14 +154,15 @@ async function run(target, type, min, max){
     console.log("select courses脚本加载成功");
     window.hasRun = true;
     isRunning = false;
+
     chrome.runtime.onMessage.addListener(async (message) => {
         if (message.command === "run") {
-            console.log("已检测到运行指令，开始启动...")
+            console.log("启动插件...")
             isRunning = true;
             run(message.targetNum, message.type, message.min, message.max);
         }
         else if (message.command === "stop"){
-            console.log("已检测到暂停指令，准备停止...")
+            console.log("停止插件...")
             isRunning = false;
         }
     });
